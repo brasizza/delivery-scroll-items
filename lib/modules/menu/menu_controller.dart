@@ -4,7 +4,7 @@ import 'package:menu_scroll_delivery_fluid/data/model/album_model.dart';
 import 'package:menu_scroll_delivery_fluid/data/service/menu_service.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class MenuController {
+class MenuDataController {
   final MenuService _service = MenuService.instance;
   final scrollController = ScrollController();
 

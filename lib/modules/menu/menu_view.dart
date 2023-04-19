@@ -14,7 +14,7 @@ class MenuView extends StatefulWidget {
 
 class _MenuViewState extends State<MenuView> {
   int currTab = 0;
-  MenuController _controller = MenuController();
+  MenuDataController _controller = MenuDataController();
   var _futureAlbums;
   List<Album> albums = [];
   @override
@@ -59,7 +59,7 @@ class _MenuViewState extends State<MenuView> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        child: FutureBuilder<Object>(
+        child: FutureBuilder<List<Album>>(
             future: _futureAlbums,
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
@@ -69,7 +69,6 @@ class _MenuViewState extends State<MenuView> {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                  break;
                 case ConnectionState.done:
                   if (snapshot.hasError) {
                     return Center(
@@ -79,7 +78,7 @@ class _MenuViewState extends State<MenuView> {
                   if (!snapshot.hasData) {
                     return Center(child: Text("No data!"));
                   }
-                  albums = snapshot.data;
+                  albums = snapshot.data ?? [];
 
                   return Column(
                     children: [
@@ -87,7 +86,7 @@ class _MenuViewState extends State<MenuView> {
                       Expanded(
                         child: ListView.builder(
                             controller: _controller.scrollController,
-                            itemCount: albums.length ?? 0,
+                            itemCount: albums.length,
                             itemBuilder: (context, index) {
                               Album _album = albums[index];
                               return StickyHeaderBuilder(
@@ -120,11 +119,8 @@ class _MenuViewState extends State<MenuView> {
                     ],
                   );
 
-                  break;
-
                 default:
                   return Container();
-                  break;
               }
             }),
       ),

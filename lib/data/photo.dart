@@ -1,39 +1,58 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
-import 'dart:math';
 
 class Photo {
   final String title;
   final String thumbnailUrl;
   final String url;
   Photo({
-    this.title,
-    this.thumbnailUrl,
-    this.url,
+    required this.title,
+    required this.thumbnailUrl,
+    required this.url,
   });
 
+  Photo copyWith({
+    String? title,
+    String? thumbnailUrl,
+    String? url,
+  }) {
+    return Photo(
+      title: title ?? this.title,
+      thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+      url: url ?? this.url,
+    );
+  }
+
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'title': title,
-      'thumbnailUrl': 'assets/images/vaders/' + Random().nextInt(7).toString() + '.png',
-      'url': 'assets/images/vaders/' + Random().nextInt(7).toString() + '.png',
+      'thumbnailUrl': thumbnailUrl,
+      'url': url,
     };
   }
 
   factory Photo.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
     return Photo(
-      title: map['title'],
-      thumbnailUrl: 'assets/images/vaders/' + Random().nextInt(7).toString() + '.png',
-      url: 'assets/images/vaders/' + Random().nextInt(7).toString() + '.png',
+      title: map['title'] as String,
+      thumbnailUrl: map['thumbnailUrl'] as String,
+      url: map['url'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Photo.fromJson(String source) => Photo.fromMap(json.decode(source));
+  factory Photo.fromJson(String source) => Photo.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'Photo(title: $title, thumbnailUrl: $thumbnailUrl, url: $url)';
+
+  @override
+  bool operator ==(covariant Photo other) {
+    if (identical(this, other)) return true;
+
+    return other.title == title && other.thumbnailUrl == thumbnailUrl && other.url == url;
+  }
+
+  @override
+  int get hashCode => title.hashCode ^ thumbnailUrl.hashCode ^ url.hashCode;
 }

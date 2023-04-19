@@ -18,15 +18,15 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.18.9 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.0
-  dio: ^3.0.10
-  scrollable_positioned_list: ^0.1.9
-  sticky_headers: ^0.1.8+1
+  dio: ^5.1.1
+  scrollable_positioned_list: ^0.3.5
+  sticky_headers: ^0.3.0+2
 
 
 dev_dependencies:

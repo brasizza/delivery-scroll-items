@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
 import 'package:menu_scroll_delivery_fluid/data/model/album_model.dart';
 import 'package:menu_scroll_delivery_fluid/modules/menu/menu_controller.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ListVertical extends StatelessWidget {
   final List<Album> albums;
   final int currTab;
   final Function update;
-  final MenuController controller;
+  final MenuDataController controller;
   const ListVertical({
-    Key key,
-    this.albums,
-    this.currTab,
-    this.update,
-    this.controller,
+    Key? key,
+    required this.albums,
+    required this.currTab,
+    required this.update,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -42,7 +41,11 @@ class ListVertical extends StatelessWidget {
                 child: Container(
                   child: Text(_album.title,
                       style: TextStyle(
-                        color: index == currTab ? Theme.of(context).textTheme.bodyText1.color : null,
+                        color: index == currTab
+                            ? Theme.of(context).primaryColor.computeLuminance() < 0.5
+                                ? Colors.black
+                                : Colors.white
+                            : null,
                         fontWeight: FontWeight.bold,
                       )),
                 ),

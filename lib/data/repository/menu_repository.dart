@@ -3,12 +3,12 @@ import 'package:menu_scroll_delivery_fluid/data/model/album_model.dart';
 import 'package:menu_scroll_delivery_fluid/data/photo.dart';
 
 class MenuRepository {
-  static MenuRepository _instance;
+  static MenuRepository? _instance;
   final _dio = Dio();
   MenuRepository._();
   static MenuRepository get instance {
     _instance ??= MenuRepository._();
-    return _instance;
+    return _instance!;
   }
 
   Future<List<Album>> getAlbunsWithPhotos() async {
@@ -22,13 +22,13 @@ class MenuRepository {
     try {
       resultAlbum = responseAlbum.data;
 
-      await Future.forEach(resultAlbum, (data) async {
-        List<Photo> _photo = await getPhotosFromAlbum(data['id']);
-        Album _album = Album.fromMap(data);
+      for (var albumResult in resultAlbum) {
+        List<Photo> _photo = await getPhotosFromAlbum(albumResult['id']);
+        Album _album = Album.fromMap(albumResult);
         _album.photos.clear();
         _album.photos.addAll(_photo);
         albums.add(_album);
-      });
+      }
 
       return albums;
       // await Future.forEach((data) async {
@@ -48,7 +48,7 @@ class MenuRepository {
 
   Future<List<Photo>> getPhotosFromAlbum(int id) async {
     try {
-      Response responsePhoto = await _dio.get("https://jsonplaceholder.typicode.com/photos?albumId=$id");
+      Response responsePhoto = await _dio.get("http://jsonplaceholder.typicode.com/photos?albumId=$id");
       if (responsePhoto.statusCode == 200) {
         List<Photo> listPhotos = responsePhoto.data.map<Photo>((map) {
           return Photo.fromMap(map);
